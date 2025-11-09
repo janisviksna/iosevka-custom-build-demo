@@ -3,15 +3,34 @@ name: Build Custom Iosevka Fonts
 on: [workflow_dispatch]
 
 jobs:
-  build:
-    name: Build ${{ matrix.fontName }} font
-    if: github.repository == 'be5invis/iosevka-custom-build-demo'
+  setup-matrix:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - name: Checkout this repository to access custom build plans
+        uses: actions/checkout@v5
+
+      - name: Get the list of font families in private-build-plans.toml
+        id: get-families
+        shell: bash
+        working-directory: get-all-families-in-private-build-plan
+        run: |
+          npm install
+          node ./index.mjs >> $GITHUB_OUTPUT
+
+  build:
+    name: Build ${{ matrix.fontFamily }} font
+    runs-on: ubuntu-latest
+    
+    needs: [setup-matrix]
 
     strategy:
       matrix:
-        # Edit this list to include your custom font names
-        fontName: ["IosevkaCustomSample"]
+        fontFamily: ${{ fromJson(needs.setup-matrix.outputs.fontFamilies) }}
 
     steps:
       # Setup dependencies
@@ -44,16 +63,16 @@ jobs:
           cp customization/private-build-plans.toml iosevka/private-build-plans.toml
 
       # Build the font
-      - name: Build Font ${{ matrix.fontName }}
+      - name: Build Font ${{ matrix.fontFamily }}
         shell: bash
         working-directory: iosevka
         run: |
           npm install
-          npm run build -- ttf::${{ matrix.fontName }}
+          npm run build -- ttf::${{ matrix.fontFamily }}
 
       # Upload build artifacts
       - name: Upload Font Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.fontName }}-ttf
-          path: iosevka/dist/${{ matrix.fontName }}/ttf/
+          name: ${{ matrix.fontFamily }}-ttf
+          path: iosevka/dist/${{ matrix.fontFamily }}/TTF/
