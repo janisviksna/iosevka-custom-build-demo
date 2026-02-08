@@ -11,14 +11,14 @@ exportGlyphNames = false
     [buildPlans.IosevkaCustom.variants.design]
     one = "base-long-top-serif"
     two = "curly-neck-serifless"
-    three = "flat-top-serifless"
-    four = "open-serifless"
-    five = "oblique-arched-serifless"
-    six = "open-contour"
-    seven = "bend-serifed"
+    three = "two-arcs"
+    four = "closed-serifless"
+    five = "upright-flat-serifless"
+    six = "straight-bar"
+    seven = "straight-serifed"
     eight = "two-circles"
-    nine = "open-contour"
-    zero = "oval-tall-slashed"
+    nine = "straight-bar"
+    zero = "reverse-slashed"
     capital-a = "straight-serifless"
     capital-b = "standard-serifless"
     capital-d = "more-rounded-serifless"
@@ -134,10 +134,10 @@ shape = 700
 menu = 700
 css = 700
 
-[buildPlans.IosevkaCustom.weights.ExtraLight]
-shape = 200
-menu = 200
-css = 200
+[buildPlans.IosevkaCustom.weights.Light]
+shape = 300
+menu = 300
+css = 300
 
 [buildPlans.IosevkaCustom.widths.Normal]
 shape = 500
